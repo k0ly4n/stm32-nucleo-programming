@@ -7,11 +7,11 @@ ESP8266_AT_Client client;
 
 SoftwareSerial EspSerial(RX_PIN, TX_PIN);
 
-char ssid[] = "******";        // SSID сети (имя)
-char pass[] = "******";        // пароль (ключ) сети
+char ssid[] = "******";        // Wi-Fi SSID (name)
+char pass[] = "******";        // password (key)
 char server[] = "ident.me";
 
-int status = WL_IDLE_STATUS;     // статус Wi-Fi
+int status = WL_IDLE_STATUS;     // Wi-Fi status
 
 void printMacAddress()
 {
@@ -19,7 +19,7 @@ void printMacAddress()
   WiFi.macAddress(mac);
   char buf[20];
   sprintf_P(buf, PSTR( "%02X:%02X:%02X:%02X:%02X:%02X"), mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
-  Serial.print(F("MAC адрес: "));
+  Serial.print(F("MAC address: "));
   Serial.println(buf);
 }
 
@@ -28,11 +28,11 @@ void listNetworks()
   int numSsid = WiFi.scanNetworks();
   if (numSsid == -1)
   {
-    Serial.println(F("Не удается установить Wi-Fi соединение"));
+    Serial.println(F("Can't establish Wi-Fi connection"));
     while (true);
   }
 
-  Serial.print(F("Количество найденных сетей Wi-Fi - "));
+  Serial.print(F("The number of found Wi-Fi networks - "));
   Serial.println(numSsid);
 
   for (int thisNet = 0; thisNet < numSsid; thisNet++) 
@@ -40,10 +40,10 @@ void listNetworks()
     Serial.print(thisNet);
     Serial.print(F(") "));
     Serial.print(WiFi.SSID(thisNet));
-    Serial.print(F("\tСигнал: "));
+    Serial.print(F("\tSignal: "));
     Serial.print(WiFi.RSSI(thisNet));
-    Serial.print(F(" дБм"));
-    Serial.print(F("\tШифрование: "));
+    Serial.print(F(" dBm"));
+    Serial.print(F("\tEncryption: "));
     printEncryptionType(WiFi.encryptionType(thisNet));
   }
 }
@@ -77,7 +77,7 @@ void httpRequest()
   client.stop();
   if (client.connect(server, 80))
   {
-    Serial.println(F("Подключаемся..."));
+    Serial.println(F("Connecting..."));
     client.println(F("GET / HTTP/1.1"));
     client.println(F("Host: ident.me"));
     client.println(F("Connection: close"));
@@ -85,7 +85,7 @@ void httpRequest()
   }
   else
   {
-    Serial.println(F("Ошибка: подключение не удалось!"));
+    Serial.println(F("Error: connection failed!"));
   }
 }
 
@@ -104,37 +104,37 @@ void setup()
   Serial.begin(115200);
   EspSerial.begin(115200);
 
-  Serial.println(F("\nWiFi пример для ESP-01 и STM32duino "));
+  Serial.println(F("\nWiFi example for ESP-01 using STM32duino "));
   WiFi.init(&EspSerial);
   if (WiFi.status() == WL_NO_SHIELD)
   {
-    Serial.println(F("Ошибка: Wi-Fi модуль не найден!"));
+    Serial.println(F("Error: Wi-Fi module is not found!"));
     while (true);
   }
 
-  // ищем сети
+  // search for networks
   Serial.println();
-  Serial.println(F("Ищем доступные сети..."));
+  Serial.println(F("Searching networks..."));
   listNetworks();
 
-  // подключаемся к заданной сети
+  // connecting to network
   while ( status != WL_CONNECTED)
   {
-    Serial.print(F("Подключаемся к точке доступа с SSID: "));
+    Serial.print(F("Connecting to the network with SSID: "));
     Serial.println(ssid);
     status = WiFi.begin(ssid, pass);
   }
 
-  Serial.print(F("Подключились к сети, получили IP = "));
+  Serial.print(F("Connected to network, got IP = "));
   Serial.println(WiFi.localIP());
 
   printMacAddress();
 
-  // делаем GET-запрос
+  // run GET-request
   httpRequest();
 }
 
 void loop()
 {
-  printoutData();  
+  printoutData();
 }

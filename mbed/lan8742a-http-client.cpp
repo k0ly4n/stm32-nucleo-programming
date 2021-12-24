@@ -5,14 +5,14 @@ EthernetInterface net;
 Serial computer(USBTX, USBRX, 9600);
 
 int main() {
-    computer.printf("Пример Ethernet для Mbed OS\n");
+    computer.printf("Ethernet example for Mbed OS\n");
     net.connect();
 
     const char *ip = net.get_ip_address();
-    computer.printf("Подключились к сети, получили IP = %s\n", ip ? ip : "ошибка, нет IP!");
+    computer.printf("Connected to network, got IP = %s\n", ip ? ip : "error, no IP!");
     computer.printf("MAC: %s\n", net.get_mac_address()); 
 
-    computer.printf("Подключаемся...\n");
+    computer.printf("Connecting...\n");
     TCPSocket socket;
     socket.open(&net);
     socket.connect("ident.me", 80);

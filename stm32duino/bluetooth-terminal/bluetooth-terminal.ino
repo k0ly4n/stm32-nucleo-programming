@@ -5,11 +5,11 @@ SoftwareSerial CC2541(RX_PIN, TX_PIN);
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Последовательный терминал STM32duino для работы с модулем Bluetooth запущен.");
+  Serial.println("Bluetooth terminal using STM32duino for Bluetooth module is started.");
   CC2541.begin(9600);
 }
 
-void loop() { // 
+void loop() {
   if (CC2541.available()) {
     Serial.write(CC2541.read());
   }
