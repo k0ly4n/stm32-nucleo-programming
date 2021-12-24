@@ -1,0 +1,35 @@
+{
+    "config": {
+        "wifi-ssid": {
+            "help": "WiFi SSID",
+            "value": "\"*****\""
+        },
+        "wifi-password": {
+            "help": "WiFi Password",
+            "value": "\"*****\""
+        },
+        "tx": {
+            "help": "TX pin for serial connection",
+            "value": "A0"
+        },
+        "rx": {
+            "help": "RX pin for serial connection",
+            "value": "A1"
+        },
+        "socket-bufsize": {
+            "help": "Max socket data heap usage",
+            "value": "1024"
+        }
+    },
+    "target_overrides": {
+        "*": {
+            "target.network-default-interface-type": "WIFI",
+            "esp8266.tx": "A0",
+            "esp8266.rx": "A1",
+            "esp8266.socket-bufsize": "1024",
+            "esp8266.debug": false,
+            "platform.stdio-convert-newlines": true,
+            "esp8266.provide-default" : true
+        }
+    }
+}
